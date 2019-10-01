@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="button" value="button" @click="flag=!flag">
+        <!-- v-if 每次都会重新删除或创建元素 -->
+        <!-- v-show 每次不会重新进行DOM的删除和创建操作，只是切换了元素的 display:none 样式 -->
+        <!-- v-if 较高切换性能消耗 -->
+        <!-- v-show 较高初始性能消耗 -->
+        <!-- 若频繁切换用v-show，若可能永远也不会被显示出来用v-if -->
+        <h1 v-if="flag">This is v-if</h1>
+        <h1 v-show="flag">This is v-show</h1>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                flag:true
+            },
+            methods:{
+
+            }
+        })
+    </script>
+</body>
+</html>

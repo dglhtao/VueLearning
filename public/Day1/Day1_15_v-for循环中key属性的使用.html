@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <label for="idtxt">Id:
+                <input type="text" v-model="id" id="idtxt">
+            </label>
+            <label for="nametxt">Name:
+                <input type="text" v-model="name" id="nametxt">
+            </label>
+            <input type="button" value="添加" @click="add">
+        </div>
+        <!-- :key将每个循环的内容绑定唯一的key值，必须用v-bind绑定，key只能使用number或string -->
+        <!-- 在组件中使用v-for循环时，若出现问题，必须在使用v-for时指定唯一的字符串/数字 类型的 :key值 -->
+        <p v-for="item in list" :key="item.id">
+            <input type="checkbox">
+            {{item.name}}
+        </p>
+    </div>
+    <script>
+        var vm= new Vue({
+            el:"#app",
+            data:{
+                id:null,
+                name:null,
+                list:[
+                    {id:1,name:'n1'},
+                    {id:2,name:'n2'},
+                    {id:3,name:'n3'},
+                    {id:4,name:'n4'},
+                    {id:5,name:'n5'}
+                ]
+            },
+            methods:{
+                add(){
+                    //this.list.push({id: this.id, name: this.name})
+                    // push塞入数组尾部
+                    this.list.unshift({id: this.id, name:this.name})
+                    // unshift塞入数组头部，塞入对象为{}，{}内输入对象的键值
+                }
+            }
+        })
+    </script>
+</body>
+</html>

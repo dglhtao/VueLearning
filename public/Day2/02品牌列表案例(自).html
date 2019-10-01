@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+    <title>Document</title>
+    <style>
+        .table tr th{
+            text-align:center
+        }
+    </style>
+</head>
+<body>
+    <div id = "app">
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">查找</h3>
+              </div>
+              <div class="panel-body form-inline" align="center">
+                    <label>
+                        Id:
+                        <input type="text" v-model="id" class="form-control">
+                    </label>
+                    <label>
+                        Name:
+                        <input type="text" v-model="name" class="form-control">
+                    </label>
+                    <input type="button" value="添加" @click="add()" class="btn btn-primary">
+                    <label>
+                        名称关键字查找:
+                        <input type="text" v-model="nameKey" class="form-control">
+                    </label>
+              </div>
+        </div>
+        
+        <div>
+            
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>name</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,i) in search(nameKey)" :index="i">
+                        <td v-for="(val,key,index) in item" :index="i">{{val}}</td>
+                        <td><a href="" @click.prevent="del(item.id)">删除</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                list:[{id:"1",name:"benci",ctime:new Date().toString()},
+                      {id:"2",name:"baoma",ctime:new Date().toString()}],
+                id:"",
+                name:"",
+                ctime:"",
+                nameKey:""
+            },
+            methods:{
+                add(){
+                    var dat={id:this.id, name:this.name, ctime:new Date()}
+                    this.list.push(dat)
+                },
+                del(id){
+                    var index=this.list.findIndex(item=>{
+                        if(id==item.id) return true
+                    })
+                    this.list.splice(index,1)
+                },
+                search(nameKey){
+                    return this.list.filter(item=>{
+                        if(item.name.includes(nameKey)) return item
+                    })
+                    // String.prototype.includes("要包含的字符串") 返回true、false
+                    /* prototype 能向对象添加属性   
+                         function employee(name,job,born)
+                         {
+                            this.name=name;
+                            this.job=job;
+                            this.born=born;
+                         }
+                         var bill=new employee("Bill Gates","Engineer",1985);
+                         employee.prototype.salary=null;
+                         bill.salary=20000;
+                         document.write(bill.salary);
+                     */
+                }
+            }
+        })
+    </script>
+</body>
+</html>

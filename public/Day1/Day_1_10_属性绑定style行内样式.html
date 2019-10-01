@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1 :style="{'font-size':'20px','color':'red'}">This is sentence 1.</h1>
+        <!-- {}可以包含多个格式，但要用v-bind绑定 -->
+        <h2 :style="styleObj1">This is sentence 2.</h2>
+        <!-- 设定style格式对象 -->
+        <h3 :style="[styleObj1,styleObj2]">This is sentence 3.</h3>
+        <!-- 设定style 格式对象的数组 -->
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                styleObj1:{'color':'blue','font-size':'30px'},
+                styleObj2:{'font-weight':'20'}
+            },
+            methods:{}
+        })
+    </script>
+</body>
+</html>

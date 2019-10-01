@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="a">
+        <select v-model="opt">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model="b">
+        <input type="button" value="=" @click="cal">
+        <input type="text" :value="c">
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                a: null,
+                b: null,
+                c: null,
+                opt: '+',
+                secret:"This is a secret"
+            },
+            methods: {
+                cal() {
+                    // switch (this.opt) {
+                    //     case "+":this.c=parseFloat(this.a)+parseFloat(this.b);
+                    //         break;
+                    //     case "-":this.c=parseFloat(this.a)-parseFloat(this.b);
+                    //         break;
+                    //     case "*":this.c=parseFloat(this.a)*parseFloat(this.b);
+                    //         break;
+                    //     case "/":if (this.b==0) this.c="Divisor can't be 0."
+                    //                 else this.c=parseFloat(this.a)/parseFloat(this.b);
+                    //         break;
+                    // }
+                    var str="parseFloat(this.a)"+this.opt+"parseFloat(this.b)"
+                    //var str="this.c="+"this.a"+this.opt+"this.b"
+                    //eval(str)
+                    this.c=eval(str)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

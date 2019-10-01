@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+        <p>{{msg | msgFormat('d','123') | test}}</p>
+
+    </div>
+    <script>
+         Vue.filter('msgFormat',function(msg,arg,arg2){
+            // return msg.replace('a','c')
+            // replace 方法，第一个参数除了可写字符串外，还可以定义一个正则
+            // return msg.replace(/a/,'b')
+            // return msg.replace(/a/g,'c')
+            //  g 全局
+            return msg.replace(/a/g,arg+arg2)
+        })
+        Vue.filter('test',function(msg){
+            return "==="+msg+"===="
+        })
+        // filter 要放在msg之前
+        // function第一个参数固定为过滤器管道传参
+        // Vue.filter("过滤器名称",function(data){
+        //     return ;
+        // })
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                msg:"a1a2a3a4 a5"
+            },
+            methods: {
+                
+            },
+        })
+    </script>
+</body>
+</html>
+<!-- 过滤器调用格式 {{name | nameope}} -->

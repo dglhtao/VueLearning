@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <style>
+        .red{
+            color: red
+        }
+        .thin{
+            font-weight: 200
+        }
+        .italic{
+            font-style: italic
+        }
+        .space{
+            letter-spacing: 1em
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1 class="red thin italic">This is a sentence.</h1>
+        <!-- 直接引用style中的样式 -->
+        <h2 :class="['thin','italic']">This is sentence 2.</h2>
+        <!-- 引用一个class数组，数组中包含style中的样式，要用v-bind绑定 -->
+        <h3 :class="['thin','italic',spac?'space':'']">This is sentence 3.</h3>
+        <!-- class数组中的样式可以添加三元运算符 -->
+        <h4 :class="['thin','italic',{'red':clr}]">This is sentence 4.</h4>
+        <!-- class数组中用{}将样式元素扩起时，可用一个bool变量标注样式否使用 -->
+        <h5 :class="{'red':true,'thin':false,'italic':false,'space':true}">This is sentence 5.</h5>
+        <!-- 用{}可扩起多个样式 -->
+        <h6 :class="classObj6">This is sentence 6.</h6>
+        <!-- 可将样式数组或{}放在data中，用一个样式对象表示，可直接用v-bind调用 -->
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                spac:true,
+                clr:true,
+                classObj6:{'red':true,'thin':false,'italic':false,'space':true}
+            },
+            methods:{}
+        })
+    </script>
+</body>
+</html>

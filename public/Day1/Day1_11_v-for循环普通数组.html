@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div v-for="item in list">{{item}}</div>
+        <!-- A in B 格式，B为data中数组对象，A依次循环B中的元素 -->
+        <div v-for="(item,i) in list">No.{{i}} is {{item}}</div>
+        <!-- (A,C) in B 格式，B为data中数组对象，A依次循环B中的元素，C为A的索引序号 -->
+    </div>
+    <script>
+        var vm =new Vue({
+            el:"#app",
+            data:{
+                list:[1,2,3,4,5,6]
+            }
+        })
+    </script>
+</body>
+</html>

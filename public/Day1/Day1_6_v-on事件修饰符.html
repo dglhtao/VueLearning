@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Day1_6_v-on事件修饰符</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <style>
+        .inner1{
+            height: 150px;
+            background-color: darkblue;
+        }
+        .inner2{
+            height: 100px;
+            background-color:darkcyan;
+        }
+        .inner3{
+            height: 50px;
+            background-color:darkgoldenrod;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="inner1" @click="divcli">
+            <input type="button" value="按钮" @click.stop="btncli">
+        </div>
+        <a href="https://www.baidu.com" @click.prevent="htmlcli">访问百度</a>
+        <div class="inner2" @click.capture="divcli">
+            <input type="button" value="按钮"  @click="btncli">
+        </div>
+        <div class="inner3" @click.self="divcli">
+            <input type="button" value="按钮"  @click="btncli">
+        </div>
+        <a href="https://www.baidu.com" @click.prevent.once="htmlcli">百度</a>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{},
+            methods:{
+                btncli(){
+                    console.log("Button is clicked")
+                },
+                divcli(){
+                    console.log("Div is clicked");
+                },
+                htmlcli(){
+                    console.log("Html is clicked");
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+<!-- .stop -->
+<!-- .prevent -->
+<!-- .capture -->
+<!-- .self -->
+<!-- .once -->

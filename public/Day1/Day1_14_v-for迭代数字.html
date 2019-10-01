@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-for="i in 10">this is No.{{i}}.</p>
+        <!-- A in B 形式， B为循环范围，A为每次循环迭代的值 -->
+    </div>
+    <script>
+        var vm = new Vue({
+            el:"#app"
+        })
+    </script>
+</body>
+</html>

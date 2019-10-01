@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Day1_5_HorseRaceLamp</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{msg}}</p>
+        <input type="button" value="Begin" :title="bgtitle" @click="bgfc">
+        <input type="button" value="Stop" :title="stptitle" @click="stpfc">
+    </div>
+    <script>
+        // 在VM中要获取data中的数据或methods中的方法，要用this.数据、this.方法来访问
+        // 此处this表示vm
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                msg:"This is a function of horse race lamp.",
+                bgtitle:"Press this button, the function will begin.",
+                stptitle:"Press this button, it will stop.",
+                intervalId:null //定义定时器id
+            },
+            methods:{
+                bgfc:function(){
+                    //console.log(this.msg)
+                    //var _this=this;
+                    if (this.intervalId!=null) return;
+                    this.intervalId = setInterval(()=>{
+                        // 用intervalId记录每次新建的定时器的id
+                        //setInterval(function(),time) 定时器
+                        var start = this.msg.substring(0,1)
+                        var end = this.msg.substring(1)
+                        this.msg= end + start
+                    }, 400)
+                },
+                stpfc(){
+                    clearInterval(this.intervalId)  //给定id，清除定时器
+                    this.intervalId=null
+                }
+            }
+        })
+    </script>
+</body>
+</html>

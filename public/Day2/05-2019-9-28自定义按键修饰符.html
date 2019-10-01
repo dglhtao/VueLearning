@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2019-9-28</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+</head>
+<body>
+    <div id="app">
+        
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                操作框
+            </div>
+            <div class="panel-body form-inline" align="center">
+               <label>
+                   Id:
+                   <input v-model="id" class="form-control" @keyup.f2="add" @keyup.13="add" v-color2="'blue'" v-fontweight="900" v-fontsize="'30px'"> 
+                   <!-- 钩子函数传递参数 v-color2="'blue'"，传递内容为字符串'blue'，若是v-color2="blue"则会在data中寻找名为blue的变量 -->
+               </label>
+               <label>
+                   名称:
+                   <input v-model="name" class="form-control"  @keyup.13="add">
+               </label>
+               <input type="button" class="btn btn-primary" value="添加" @click="add">
+               <p></p>
+               <label>
+                    搜索:
+                    <!-- <input v-model="nameKey" id="nameKey" class="form-control" @change="search(nameKey)"> -->
+                    <!-- 注意 Vue中所有指令调用时，都以v- 开头 -->
+                    <input v-model="nameKey" class="form-control" @change="search(nameKey)" v-focus v-color>
+                </label>
+            </div>
+        </div>
+        
+        <table class="table table-bordered table-hover" style="text-align: center">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in table" :key="index">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.time | time1}}</td>
+                    <td>
+                        <a href="" @click.prevent="del(item.id)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <script>
+        Vue.filter("time1",function(time){
+            var y=time.getFullYear()
+            var m=time.getMonth().toString().padStart(2,'0')
+            var d=time.getDate().toString().padStart(2,'0')
+            var hh=time.getHours().toString().padStart(2,'0')
+            var mm=time.getMinutes().toString().padStart(2,'0')
+            var ss=time.getSeconds().toString().padStart(2,'0')
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+        })
+        //自定义全局按键修饰符
+        Vue.config.keyCodes.f2=113
+
+        // 自定义全局指令
+        Vue.directive("focus",{
+            bind:function(el){
+                //注意：在每个函数中第一个永远是el，表示被绑定了指令的那个元素，这个el参数是个原生的JS对象
+                // el.focus() 
+                // 不能将焦点初始在el上原因：在元素绑定指令时，元素还没有被插入DOM树中，这时元素还在内存中，
+                // 没有显示在页面，focus()方法没有作用，只有在元素插入到DOM中后才能获取焦点
+            }, //每当指令绑定到元素上的时候，会立即执行bind函数，只执行一次
+            inserted:function(el){ 
+                el.focus()
+                //和JS行为有关的操作，最好在inserted中去执行，放置bind，JS行为不生效
+                //和样式相关的操作，一般都可以在bind执行
+            }, //inserted表示元素插入到DOM中的时候(页面内容加载后)，会执行inserted函数，触发一次。
+            updated:function(){ }   //当VNode更新的时候(即DOM节点更新时)，会执行updated，可能会触发多次
+        })
+        // Vue.directive() 
+        // param1为指令名称，不需要加v-前缀，但在调用时必须加上v-前缀
+        // param2是个对象，这个对象身上有钩子函数，这些函数可以在特定阶段，执行相关操作
+
+        Vue.directive('color',{
+            bind:function(el){
+                el.style.color='red'
+                //样式不必写入DOM中，可以直接写入元素属性（内存中），元素被解析入DOM中（页面中）时，样式也会被解析写入
+                //样式，只要通过指令绑定给了元素，不管这个元素有没有被插入到页面中，这个元素肯定有了一个内联样式
+                //浏览器的渲染引擎会解析这个样式，应用给这元素
+            },
+            inserted:function(el){
+                el.style.color="blue"
+            }
+        })
+
+        Vue.directive('color2',{
+            bind:function(el,binding){
+                el.style.color=binding.value
+                console.log(binding.expression)
+                console.log(binding.value)
+                console.log(binding)
+            }
+        })
+
+        var vm= new Vue({
+            el:"#app",
+            data:{
+                id:"",
+                name:"",
+                nameKey:"",
+                list:[
+                    {id:"1",name:"奔驰",time:new Date()},
+                    {id:"2",name:"宝马",time:new Date()},
+                    {id:"3",name:"奥迪",time:new Date()}
+                ],
+                table:[]
+            },
+            methods:{
+                add(){
+                    // document.write("11")
+                    if(this.id==""){
+                        alert("Id should not be empty!")
+                        return;
+                    }
+                    else
+                    if(this.name==""){
+                        alert("Name should not be empty!")
+                        return;
+                    }
+                    var bool = this.list.some(item => {
+                        if(item.id==this.id)
+                        return true
+                    });
+                    console.log(bool)
+                    if (bool==true)
+                        alert("Id should be unique")
+                    else
+                    {
+                        this.list.push({id:this.id,name:this.name,time:new Date()})
+                        this.search(this.nameKey)
+                    }
+                },
+                del(id){
+                    this.list.splice(this.list.findIndex(item=>{
+                        if(item.id==id) return true
+                    }),1)
+                    this.search(this.nameKey)
+                },
+                search(nameKey){
+                    this.table=[]
+                    this.list.forEach(item=>{
+                        if(
+                           (item.name.toString().indexOf(nameKey)!=-1))
+                           this.table.push(item)
+                    })
+                }
+            },
+            filters:{
+                time2(time){
+                    var y=time.getFullYear()
+                    var m=time.getMonth().toString().padStart(2,'0')
+                    var d=time.getDate().toString().padStart(2,'0')
+                    return `${y}-${m}-${d}`
+                }
+            },
+            // 定义私有指令
+            directives:{
+                'fontweight':{ //设置字体粗细   
+                    bind:function(el,binding){
+                        el.style.fontWeight=binding.value
+                    }
+                },
+                'fontsize': function(el,binding){ //注意：这个function等同于把代码写入bind和update中去
+                    el.style.fontSize =parseInt(binding.value) + 'px'
+                }
+            },
+            created(){
+                this.table=this.list
+            }
+        })
+        // document.getElementById("nameKey").focus()
+        //不提倡
+    </script>
+</body>
+</html>

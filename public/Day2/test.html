@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>test</title>
+    <script src="./lib/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap-3.3.7.css">
+    <style>
+        [v-cloak]{
+            display :none
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">test</h3>
+            </div>
+            <div class="panel-body" align="center">
+                <label>
+                    Id:
+                    <input type="text" v-model="id">
+                </label>
+                <label>
+                    Name:
+                    <input type="text" v-model="name">
+                </label>
+                <input type="button" value="添加" @click="add">
+                <p></p>
+                <input type="text" v-model="strA">
+                <input type="button" value="过滤器">
+                <p></p>
+                <input type="button" value="跑马灯" @click="run_stop">
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Time</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in search()" :key="item.id">
+                    <td v-cloak>{{item.id}}</td>
+                    <td v-cloak>{{item.name}}</td>
+                    <td v-cloak>{{item.time | ctime}}</td>
+                    <td v-cloak><a href="" @click.prevent="del(item.id)">删除</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div :style="{'font-size':'20px','color':'blue'}">{{msg | msgfil(strA)}}</div>
+    </div>
+    <script>
+        Vue.filter("msgfil",function(msg,msg2){
+            return msg+msg2
+        })
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                id: "",
+                name: "",
+                strA: "",
+                strB: "",
+                msg: "12345678901234567890",
+                intervalId: null,
+                list:[{id:1, name:"奔驰", time:new Date()},
+                      {id:2, name:"宝马", time:new Date()},
+                      {id:3, name:"特斯拉", time:new Date()}],
+            },
+            methods:{
+                add(){
+                    this.list.push({id:this.id, name:this.name, time:new Date()})
+                },
+                del(id){
+                    var index=this.list.findIndex(item=>{
+                        if(item.id==id) return true
+                    })
+                    this.list.splice(index,1)
+                },
+                search(){
+                    return this.list.filter(item=>{
+                        if((item.id.toString().indexOf(this.id)!=-1)
+                         &&(item.name.indexOf(this.name)!=-1))
+                         return item
+                    })
+                },
+                run_stop(){
+                    if(this.intervalId==null){
+                        this.intervalId=setInterval(()=>{
+                            for (let index = 0; index < this.list.length; index++) {
+                                const element = this.list[index];
+                                element.name=element.name.substring(1,element.name.length)+element.name.substring(0,1)
+                            }
+                            this.msg=this.msg.substring(1,this.msg.length)+this.msg.substring(0,1)
+                        },400)
+                    }else
+                    {
+                        clearInterval(this.intervalId)
+                        this.intervalId=null
+                    }
+                }
+            },
+            filters:{
+                ctime(time){
+                    var y=time.getFullYear().toString().padStart(4,'0')
+                    var m=time.getMonth().toString().padStart(2,'0')
+                    var d=time.getDate().toString().padStart(2,'0')
+                    var hh=time.getHours().toString().padStart(2,'0')
+                    var mm=time.getMinutes().toString().padStart(2,'0')
+                    var ss=time.getSeconds().toString().padStart(2,'0')
+                    return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+                }
+            }
+        })
+    </script>
+</body>
+</html>
